@@ -462,7 +462,7 @@ const I18N = {
 
     'hero.eyebrow': '杭州 \u00b7 始于 2005',
     'hero.title':   '春之声',
-    'hero.lead':    '把江南文化织进每一段旅程的精品旅行社。家族两代人 50 余年积淀，Wild China（全球 Top 12）官方供应商。',
+    'hero.lead':    '把江南文化织进每一段旅程的精品旅行社',
     'hero.cta.products': '了解产品',
     'hero.cta.contact':  '联系我们',
 
