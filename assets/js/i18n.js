@@ -20,7 +20,7 @@ const I18N = {
     /* hero (index) */
     'hero.eyebrow':  'Hangzhou · Since 2005',
     'hero.title':    'Sound Of Spring',
-    'hero.lead':     'A boutique travel house weaving Jiangnan culture into every journey. Over 50 years of family heritage, now the official supplier of Wild China (Top 12 worldwide).',
+    'hero.lead':     'A boutique travel house weaving Jiangnan culture into every journey',
     'hero.cta.products': 'Explore Tours',
     'hero.cta.contact':  'Talk to Us',
 
