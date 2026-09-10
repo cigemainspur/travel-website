@@ -1,0 +1,15 @@
+# 原始素材（超大文件，超过 GitHub 100MB 限制，不入库）
+docs/春之声国际旅行社简介.pptx
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 编辑器 / IDE
+.idea/
+.vscode/
+*.swp
+
+# 日志与临时文件
+*.log
+node_modules/
