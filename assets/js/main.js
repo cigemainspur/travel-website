@@ -4,6 +4,18 @@
 (function () {
   'use strict';
 
+  /* ----- 渠道标识：path /c/{code} 或 query ?channel=，存 localStorage ----- */
+  (function initChannel() {
+    const seg = location.pathname.split('/').filter(Boolean);
+    let channel = null;
+    if (seg[0] === 'c' && seg[1]) {
+      channel = seg[1];
+    } else {
+      channel = new URLSearchParams(location.search).get('channel');
+    }
+    if (channel) localStorage.setItem('channel', channel);
+  })();
+
   /* ----- Mobile nav ----- */
   const toggle = document.querySelector('.nav-toggle');
   const tabs = document.querySelector('.nav-tabs');

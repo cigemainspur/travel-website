@@ -73,6 +73,68 @@ const FORM_SCHEMAS = {
   }
 };
 
+/* 差异化字段 → 收集到 extra 的映射 */
+const DIFF_FIELDS = {
+  budget: 'single',
+  themes: 'multi',
+  days: 'single',
+  mode: 'single',
+  childAge: 'single',
+  childCount: 'number',
+  kidsMeal: 'bool',
+  modules: 'multi',
+  guideLang: 'single',
+};
+
+function getApiBase() {
+  return (window.APP_CONFIG && window.APP_CONFIG.API_BASE) || 'http://localhost:8000';
+}
+
+function getChannelCode() {
+  return localStorage.getItem('channel') || null;
+}
+
+async function submitLead(productType, form) {
+  const fd = new FormData(form);
+  const extra = {};
+  Object.entries(DIFF_FIELDS).forEach(([key, kind]) => {
+    if (kind === 'multi') {
+      const vals = fd.getAll(key);
+      if (vals.length) extra[key] = vals;
+    } else if (kind === 'bool') {
+      if (fd.get(key)) extra[key] = true;
+    } else if (kind === 'number') {
+      const v = fd.get(key);
+      if (v) extra[key] = Number(v);
+    } else {
+      const v = fd.get(key);
+      if (v) extra[key] = v;
+    }
+  });
+
+  const payload = {
+    name: fd.get('name') || '',
+    email: fd.get('email') || '',
+    phone: fd.get('phone') || null,
+    preferred_date: fd.get('date') || null,
+    travelers: fd.get('people') ? Number(fd.get('people')) : null,
+    product_type: productType,
+    message: fd.get('note') || null,
+    channel_code: getChannelCode(),
+    extra: extra,
+  };
+
+  const res = await fetch(`${getApiBase()}/api/v1/leads`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || 'submit failed');
+  }
+}
+
 function reqMark() {
   return '<span class="req" aria-hidden="true">*</span>';
 }
@@ -184,13 +246,16 @@ function bindForm(root) {
 
     if (!ok) return;
 
-    // collect
-    const data = {};
-    new FormData(form).forEach((v, k) => { if (v !== '') data[k] = v; });
-    console.log('[Sound Of Spring · Demo inquiry]', data);
-
-    form.reset();
-    if (window.showToast) window.showToast(I18n.t('toast.success'));
+    const productType = root.getAttribute('data-form');
+    submitLead(productType, form)
+      .then(() => {
+        form.reset();
+        if (window.showToast) window.showToast(I18n.t('toast.success'));
+      })
+      .catch(err => {
+        console.error('[lead submit error]', err);
+        if (window.showToast) window.showToast('提交失败，请稍后再试');
+      });
   });
 }
 
@@ -221,13 +286,70 @@ function initContactForm() {
       });
       return;
     }
-    console.log('[Sound Of Spring · Contact]', { name, email, msg });
-    form.reset();
-    if (window.showToast) window.showToast(I18n.t('toast.success'));
+    const payload = {
+      name,
+      email,
+      phone: form.querySelector('[name="phone"]')?.value || null,
+      message: msg,
+      channel_code: getChannelCode(),
+      extra: {},
+    };
+    fetch(`${getApiBase()}/api/v1/leads`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('submit failed');
+        form.reset();
+        if (window.showToast) window.showToast(I18n.t('toast.success'));
+      })
+      .catch(err => {
+        console.error('[contact submit error]', err);
+        if (window.showToast) window.showToast('提交失败，请稍后再试');
+      });
+  });
+}
+
+function initInquiryForm() {
+  const form = document.getElementById('inquiry-form');
+  if (!form) return;
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const name = form.querySelector('[name="name"]').value.trim();
+    const contact = form.querySelector('[name="contact"]').value.trim();
+    const message = form.querySelector('[name="message"]').value.trim();
+    if (!name || !contact || !message) {
+      if (window.showToast) window.showToast('请填写完整信息');
+      return;
+    }
+    const payload = {
+      name,
+      phone: contact,          // 联系方式存 phone 字段
+      message,
+      product_type: 'inquiry', // 用户诉求收集
+      channel_code: getChannelCode(),
+      extra: {},
+    };
+    fetch(`${getApiBase()}/api/v1/leads`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('submit failed');
+        form.reset();
+        if (window.showToast) window.showToast(I18n.t('toast.success'));
+      })
+      .catch(err => {
+        console.error('[inquiry submit error]', err);
+        if (window.showToast) window.showToast('提交失败，请稍后再试');
+      });
   });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   initProductForms();
   initContactForm();
+  initInquiryForm();
 });

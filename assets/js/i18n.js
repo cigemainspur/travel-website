@@ -23,6 +23,12 @@ const I18N = {
     'hero.lead':     'A boutique travel house weaving Jiangnan culture into every journey',
     'hero.cta.products': 'Explore Tours',
     'hero.cta.contact':  'Talk to Us',
+    'inquiry.title':     'Tell us what you need',
+    'inquiry.sub':       "Leave your contact and we'll reach out soon",
+    'inquiry.name':      'Name',
+    'inquiry.contact':   'Contact (phone / WeChat / email)',
+    'inquiry.message':   'Describe your request',
+    'inquiry.submit':    'Submit',
 
     /* about */
     'about.eyebrow': 'Who We Are',
@@ -247,6 +253,12 @@ const I18N = {
     'hero.lead':     '\u0411\u0443\u0442\u0438\u043a\u043e\u0432\u043e\u0435 \u0442\u0443\u0440\u0438\u0441\u0442\u0438\u0447\u0435\u0441\u043a\u043e\u0435 \u0430\u0433\u0435\u043d\u0442\u0441\u0442\u0432\u043e, \u0432\u043f\u043b\u0435\u0442\u0430\u044e\u0449\u0435\u0435 \u043a\u0443\u043b\u044c\u0442\u0443\u0440\u0443 \u0426\u0437\u044f\u043d\u044c\u043d\u0430\u043d\u0430 \u0432 \u043a\u0430\u0436\u0434\u043e\u0435 \u043f\u0443\u0442\u0435\u0448\u0435\u0441\u0442\u0432\u0438\u0435. \u0411\u043e\u043b\u0435\u0435 50 \u043b\u0435\u0442 \u0441\u0435\u043c\u0435\u0439\u043d\u043e\u0439 \u0442\u0440\u0430\u0434\u0438\u0446\u0438\u0438 \u2014 \u043c\u044b \u043e\u0444\u0438\u0446\u0438\u0430\u043b\u044c\u043d\u044b\u0439 \u043f\u0430\u0440\u0442\u043d\u0451\u0440 Wild China (Top 12 \u0432 \u043c\u0438\u0440\u0435).',
     'hero.cta.products': '\u0421\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u0442\u0443\u0440\u044b',
     'hero.cta.contact':  '\u0421\u0432\u044f\u0437\u0430\u0442\u044c\u0441\u044f \u0441 \u043d\u0430\u043c\u0438',
+    'inquiry.title':     '\u0420\u0430\u0441\u0441\u043a\u0430\u0436\u0438\u0442\u0435 \u043e \u0432\u0430\u0448\u0438\u0445 \u043f\u043e\u0436\u0435\u043b\u0430\u043d\u0438\u044f\u0445',
+    'inquiry.sub':       '\u041e\u0441\u0442\u0430\u0432\u044c\u0442\u0435 \u043a\u043e\u043d\u0442\u0430\u043a\u0442\u044b, \u043c\u044b \u0441\u043a\u043e\u0440\u043e \u0441\u0432\u044f\u0436\u0435\u043c\u0441\u044f \u0441 \u0432\u0430\u043c\u0438',
+    'inquiry.name':      '\u0418\u043c\u044f',
+    'inquiry.contact':   '\u041a\u043e\u043d\u0442\u0430\u043a\u0442 (\u0442\u0435\u043b\u0435\u0444\u043e\u043d / WeChat / email)',
+    'inquiry.message':   '\u041e\u043f\u0438\u0448\u0438\u0442\u0435 \u0432\u0430\u0448 \u0437\u0430\u043f\u0440\u043e\u0441',
+    'inquiry.submit':    '\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c',
 
     /* about */
     'about.eyebrow': '\u041a\u0442\u043e \u043c\u044b',
@@ -465,6 +477,12 @@ const I18N = {
     'hero.lead':    '把江南文化织进每一段旅程的精品旅行社',
     'hero.cta.products': '了解产品',
     'hero.cta.contact':  '联系我们',
+    'inquiry.title':     '告诉我们你的诉求',
+    'inquiry.sub':       '留下联系方式，我们尽快与你联系',
+    'inquiry.name':      '姓名',
+    'inquiry.contact':   '联系方式（手机/微信/邮箱）',
+    'inquiry.message':   '请描述你的诉求',
+    'inquiry.submit':    '提交诉求',
 
     'about.eyebrow': '关于我们',
     'about.title':   '一支不断突破传统旅行的进取团队。',

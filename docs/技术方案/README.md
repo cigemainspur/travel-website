@@ -1,6 +1,6 @@
 # 春之声国际旅行社 · 落地页 Demo — 技术方案
 
-> 版本：v1.0 · 日期：2026-09-10 · 状态：待评审（含 §10 待确认问题）
+> 版本：v1.1 · 日期：2026-09-16 · 状态：待评审（含 §10 待确认问题）
 
 ---
 
@@ -15,7 +15,7 @@
 | 图片 | JPEG / PNG，已从 PPT 提取并规整 | 无需引入额外素材 |
 | 字体 | Google Fonts（Playfair Display + Inter）+ 思源宋体/黑体（中文兜底） | 体现江南文化质感 |
 | 构建 | **无构建** | 直接 `<script>` 引用 |
-| 部署 | 任意静态服务（`python -m http.server`、`npx serve`、Nginx、CDN） | 无服务端逻辑 |
+| 部署 | Demo 用 Vercel；生产用 Cloudflare Pages（支持 `_redirects` rewrite） | 纯静态，无服务端逻辑 |
 
 ## 2. 项目结构
 
@@ -37,14 +37,17 @@ travel-website/
 ├── contact.html                            # 联系我们
 ├── guides/                                 # 攻略详情（Demo 占位）
 │   └── README.md
+├── vercel.json                             # Vercel rewrite（path 渠道 URL）
+├── _redirects                              # Cloudflare Pages rewrite
 └── assets/
     ├── css/
     │   ├── reset.css                       # 浏览器样式重置
     │   └── style.css                       # 主样式（包含 CSS 变量、组件）
     ├── js/
+    │   ├── config.js                       # 接口地址（本地/线上自动切换）
     │   ├── i18n.js                         # 多语言字典 + 切换逻辑
     │   ├── main.js                         # 导航高亮、Tab 行为、表单校验
-    │   └── forms.js                        # 4 个差异化表单的配置 + 校验
+    │   └── forms.js                        # 差异化表单 + 提交后端接口
     └── images/                             # 60+ 张 PPT 提取的图片
         ├── hero-*.jpg
         ├── about-*.{jpg,png,jpeg}
@@ -107,6 +110,40 @@ travel-website/
 
 为减少重复代码，**详情页可以接受少量 HTML 重复**（Demo 体量可控）；
 如需进一步抽象，可将通用 section 抽成 `<template>` + JS 注入。
+
+### 3.5 渠道 URL 与渠道标识（path 形式）
+
+**URL 规则**：C 端通过 URL 路径区分渠道来源，格式 `/c/{channel_code}`：
+
+```
+https://<c端域名>/c/yelang
+```
+
+**rewrite 配置**（把 `/c/:channel` 重写到 `index.html`，URL 保持不变）：
+
+- Vercel（`vercel.json`）：
+  ```json
+  { "rewrites": [{ "source": "/c/:channel", "destination": "/index.html" }] }
+  ```
+- Cloudflare Pages（`_redirects`）：
+  ```
+  /c/:channel  /index.html  200
+  ```
+
+> 使用 `/c/` 前缀，避免与现有 `.html` 页面（`products.html` 等）产生路径匹配歧义。
+
+**前端读取 + 跨页面保持**（在 `main.js` 中执行）：
+
+```js
+// 首次进入任意页时执行一次
+const seg = location.pathname.split('/').filter(Boolean); // ['c','yelang']
+const channel = seg[0] === 'c' ? seg[1] : null;
+if (channel) localStorage.setItem('channel', channel);
+// 后续所有页面统一从 localStorage 读取渠道
+```
+
+- 渠道标识存 `localStorage`，跨页面跳转不丢失
+- 留资提交时携带 `channel_code = localStorage.getItem('channel')`
 
 ## 4. 多语言 i18n 实现
 
@@ -218,8 +255,54 @@ const FORM_SCHEMAS = {
 - 通用字段（name/email/phone/date/people）放在每个详情页 HTML 中以保证 SEO
 - 差异化字段由 JS 在 `DOMContentLoaded` 时动态渲染到 `<form data-form="custom">`
 - 前端校验：HTML5 `required` + 自定义 JS（手机正则、邮箱正则）
-- 提交：阻止默认行为 → 收集数据到 `console` → 弹 Toast 提示（生产时再接后端）
+- 提交：阻止默认行为 → 前端校验 → 调后端接口 `POST /api/v1/leads` → 成功弹 Toast
 - **i18n**：所有 label/option 也通过 `data-i18n` 翻译
+
+### 5.1 后端接口对接
+
+留资表单提交到后端项目 `travel-website-backend` 的接口：
+
+```
+POST {API_BASE}/api/v1/leads
+Content-Type: application/json
+
+{
+  "name": "...",
+  "email": "...",
+  "phone": "...",
+  "preferred_date": "...",   // 对应表单 date
+  "travelers": 2,            // 对应表单 people
+  "product_type": "custom",  // custom/traditional/family/culture
+  "message": "...",          // 客户需求描述
+  "channel_code": "yelang"   // 来自 URL path /c/yelang
+  // ...各产品差异化字段（budget/themes/days/mode/childAge 等）随表单一并提交
+}
+```
+
+- 提交逻辑在 `forms.js` 统一处理，`channel_code` 从 `localStorage` 读取
+- 字段映射：`date`→`preferred_date`、`people`→`travelers`、`note`→`message`
+- 各产品差异化字段随表单一并提交，由后端决定存储（入 `message` 或扩展字段）
+
+### 5.2 接口多环境切换（本地/线上）
+
+`assets/js/config.js` 根据域名自动判断接口地址：
+
+```js
+window.APP_CONFIG = {
+  API_BASE: (() => {
+    const host = location.hostname;
+    if (host === 'localhost' || host === '127.0.0.1') {
+      return 'http://localhost:8000';          // 本地调试 → 本地后端
+    }
+    return 'https://api.soundofspring.travel'; // 线上部署 → 线上后端
+  })()
+};
+```
+
+- **本地调试**：前端跑在 `localhost`，自动访问本地后端 `http://localhost:8000`
+- **线上部署**：前端跑在正式域名，自动访问线上后端
+- 无需手动切换、无需构建替换
+- 需配合后端 CORS 允许前端域名（后端 `CORS_ORIGINS` 配置）
 
 ## 6. 响应式策略
 
@@ -250,7 +333,7 @@ const FORM_SCHEMAS = {
 
 ## 8. 部署与本地预览
 
-本地预览：
+### 8.1 本地预览
 
 ```bash
 cd travel-website
@@ -258,13 +341,26 @@ python3 -m http.server 8080
 # 浏览器打开 http://localhost:8080
 ```
 
-或：
+本地调试接口时，后端跑在 `localhost:8000`，`config.js` 会自动指向本地后端。
 
-```bash
-npx serve .
-```
+### 8.2 渠道 path 的 rewrite 配置
 
-部署：上传整个目录到任意静态托管即可，无服务端、无环境变量。
+path 形式渠道 URL（`/c/yelang`）需要 rewrite 到 `index.html`：
+
+- **Vercel**（`vercel.json`）：
+  ```json
+  { "rewrites": [{ "source": "/c/:channel", "destination": "/index.html" }] }
+  ```
+- **Cloudflare Pages**（`_redirects`）：
+  ```
+  /c/:channel  /index.html  200
+  ```
+
+### 8.3 生产部署
+
+- **C 端**：Cloudflare Pages（俄罗斯覆盖好、支持 `_redirects`、GitHub 自动部署）
+- **接口地址**：`config.js` 中的线上 `API_BASE`，指向后端线上域名
+- **后端**：独立部署（见后端项目 `travel-website-backend` 技术方案），与 C 端分离
 
 ## 9. 浏览器兼容矩阵
 
@@ -302,9 +398,7 @@ npx serve .
 - **如需高品质**：建议交给专业翻译，我会在 `i18n.js` 顶部标记 `TODO: review by native speaker`。
 
 ### Q5. 留资表单的提交目标
-- **问题**：Demo 中表单提交到哪？
-- **默认假设**：仅前端模拟（弹成功提示 + 控制台打印 JSON），**不接后端**。
-- **如需真实上报**：请告知后端接口或邮件接收地址。
+- ✅ 已确认：提交到后端项目 `travel-website-backend` 的 `POST /api/v1/leads`。
 
 ### Q6. 是否需要暗黑模式 / 主题切换
 - **问题**：用户要求"明亮色"，是否需要反向支持？
