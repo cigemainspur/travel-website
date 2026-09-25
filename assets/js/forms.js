@@ -1,30 +1,30 @@
 /* ============================================================
    forms.js · 4 个差异化留资表单
-   在 [data-form="custom|traditional|family|culture"] 节点中
+   在 [data-form="biz|scn|cul|food"] 节点中
    渲染对应的差异化字段，并处理校验与提交。
    ============================================================ */
 
 const FORM_SCHEMAS = {
-  custom: {
+  biz: {
     extra: [
-      { type: 'select', key: 'budget', required: true,
+      { type: 'select', key: 'delegationSize', required: true,
         options: [
-          { v: 'u3k',  k: 'form.budget.opt1' },
-          { v: '3-8',  k: 'form.budget.opt2' },
-          { v: '8-20', k: 'form.budget.opt3' },
-          { v: 'a20',  k: 'form.budget.opt4' }
+          { v: '1-5',   k: 'form.delegationSize.opt1' },
+          { v: '6-15',  k: 'form.delegationSize.opt2' },
+          { v: '16-30', k: 'form.delegationSize.opt3' },
+          { v: '30+',   k: 'form.delegationSize.opt4' }
         ] },
-      { type: 'checkbox-group', key: 'themes', required: false,
+      { type: 'checkbox-group', key: 'interests', required: true,
         options: [
-          { v: 'culture', k: 'form.themes.culture' },
-          { v: 'food',    k: 'form.themes.food' },
-          { v: 'photo',   k: 'form.themes.photo' },
-          { v: 'outdoor', k: 'form.themes.outdoor' }
+          { v: 'robotics',      k: 'form.interests.robotics' },
+          { v: 'ecommerce',     k: 'form.interests.ecommerce' },
+          { v: 'manufacturing', k: 'form.interests.manufacturing' },
+          { v: 'academia',      k: 'form.interests.academia' }
         ] },
-      { type: 'textarea', key: 'note', required: false }
+      { type: 'textarea', key: 'goals', required: false }
     ]
   },
-  traditional: {
+  scn: {
     extra: [
       { type: 'radio', key: 'days', required: true,
         options: [
@@ -34,40 +34,54 @@ const FORM_SCHEMAS = {
           { v: '5', k: 'form.days.opt4' },
           { v: '7', k: 'form.days.opt5' }
         ] },
-      { type: 'radio', key: 'mode', required: true,
+      { type: 'radio', key: 'pace', required: true,
         options: [
-          { v: 'group', k: 'form.mode.group' },
-          { v: 'semi',  k: 'form.mode.semi'  }
+          { v: 'relaxed',  k: 'form.pace.relaxed' },
+          { v: 'standard', k: 'form.pace.standard' },
+          { v: 'compact',  k: 'form.pace.compact' }
+        ] },
+      { type: 'checkbox-group', key: 'hl', required: false,
+        options: [
+          { v: 'temples', k: 'form.hl.temples' },
+          { v: 'shows',   k: 'form.hl.shows' },
+          { v: 'tea',     k: 'form.hl.tea' },
+          { v: 'nature',  k: 'form.hl.nature' }
         ] }
     ]
   },
-  family: {
+  cul: {
     extra: [
-      { type: 'radio', key: 'childAge', required: true,
+      { type: 'checkbox-group', key: 'workshops', required: true,
         options: [
-          { v: '0-3',   k: 'form.childAge.opt1' },
-          { v: '4-6',   k: 'form.childAge.opt2' },
-          { v: '7-12',  k: 'form.childAge.opt3' },
-          { v: '13-17', k: 'form.childAge.opt4' }
-        ] },
-      { type: 'number', key: 'childCount', required: true, min: 1, max: 8 },
-      { type: 'checkbox', key: 'kidsMeal', required: false }
-    ]
-  },
-  culture: {
-    extra: [
-      { type: 'checkbox-group', key: 'modules', required: true,
-        options: [
-          { v: 'roleplay', k: 'form.modules.roleplay' },
-          { v: 'museum',   k: 'form.modules.museum'   },
-          { v: 'diy',      k: 'form.modules.diy'      },
-          { v: 'dining',   k: 'form.modules.dining'   }
+          { v: 'calligraphy', k: 'form.workshops.calligraphy' },
+          { v: 'crafts',      k: 'form.workshops.crafts' },
+          { v: 'opera',       k: 'form.workshops.opera' },
+          { v: 'tcm',         k: 'form.workshops.tcm' }
         ] },
       { type: 'radio', key: 'guideLang', required: true,
         options: [
           { v: 'zh', k: 'form.guideLang.zh' },
           { v: 'en', k: 'form.guideLang.en' },
           { v: 'ru', k: 'form.guideLang.ru' }
+        ] }
+    ]
+  },
+  food: {
+    extra: [
+      { type: 'checkbox-group', key: 'dinners', required: true,
+        options: [
+          { v: 'teagarden', k: 'form.dinners.teagarden' },
+          { v: 'bamboo',    k: 'form.dinners.bamboo' },
+          { v: 'songmenu',  k: 'form.dinners.songmenu' },
+          { v: 'hangzhou',  k: 'form.dinners.hangzhou' },
+          { v: 'yacht',     k: 'form.dinners.yacht' }
+        ] },
+      { type: 'radio', key: 'diet', required: true,
+        options: [
+          { v: 'none',       k: 'form.diet.none' },
+          { v: 'vegetarian', k: 'form.diet.vegetarian' },
+          { v: 'halal',      k: 'form.diet.halal' },
+          { v: 'allergies',  k: 'form.diet.allergies' }
         ] }
     ]
   }
@@ -84,6 +98,14 @@ const DIFF_FIELDS = {
   kidsMeal: 'bool',
   modules: 'multi',
   guideLang: 'single',
+  delegationSize: 'single',
+  interests: 'multi',
+  goals: 'single',
+  pace: 'single',
+  hl: 'multi',
+  workshops: 'multi',
+  dinners: 'multi',
+  diet: 'single',
 };
 
 function getApiBase() {

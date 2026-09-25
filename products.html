@@ -4,12 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Tours · Sound Of Spring</title>
-  <meta name="description" content="Four signature Jiangnan journeys: custom, classic, family and cultural experiences.">
+  <meta name="description" content="Business inspection tours, classic sights, cultural experiences and food journeys in Hangzhou and Wuzhen.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap">
   <link rel="stylesheet" href="/assets/css/reset.css">
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/style.css?v=20260924c">
 </head>
 <body data-page="products">
 
@@ -22,10 +22,10 @@
     <div class="nav-tabs">
       <a href="/index.html" class="nav-tab" data-i18n="nav.home">Company</a>
       <a href="/products.html" class="nav-tab" aria-current="page" data-i18n="nav.products">Tours</a>
-      <a href="/guides.html" class="nav-tab" data-i18n="nav.guides">Guides</a>
       <a href="/contact.html" class="nav-tab" data-i18n="nav.contact">Contact</a>
+      <button class="btn btn-accent nav-register" data-register data-i18n="nav.register">报名</button>
       <label class="lang-switch">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18M12 3a14 14 0 000 18"/></svg>
         <select data-lang-select aria-label="Language">
           <option value="en">EN</option><option value="ru">RU</option><option value="zh">ZH</option>
         </select>
@@ -41,92 +41,92 @@
   <div class="container">
     <div class="section-head">
       <span class="eyebrow" data-i18n="products.eyebrow">Our Tours</span>
-      <h1 data-i18n="products.title">Four journeys, one Jiangnan.</h1>
+      <h1 data-i18n="products.title">Four journeys, one Jiangnan</h1>
       <p data-i18n="products.subtitle">Pick the style that fits you — every tour is fully customizable.</p>
       <div class="section-divider"></div>
     </div>
 
     <div class="product-filter">
       <button class="filter-chip" data-filter="all" aria-pressed="true" data-i18n="filter.all">All</button>
-      <button class="filter-chip" data-filter="custom" aria-pressed="false" data-i18n="filter.custom">Custom</button>
-      <button class="filter-chip" data-filter="traditional" aria-pressed="false" data-i18n="filter.traditional">Classic</button>
-      <button class="filter-chip" data-filter="family" aria-pressed="false" data-i18n="filter.family">Family</button>
-      <button class="filter-chip" data-filter="culture" aria-pressed="false" data-i18n="filter.culture">Cultural</button>
+      <button class="filter-chip" data-filter="biz" aria-pressed="false" data-i18n="filter.biz">Business</button>
+      <button class="filter-chip" data-filter="scn" aria-pressed="false" data-i18n="filter.scn">Classic Sights</button>
+      <button class="filter-chip" data-filter="cul" aria-pressed="false" data-i18n="filter.cul">Cultural</button>
+      <button class="filter-chip" data-filter="food" aria-pressed="false" data-i18n="filter.food">Food</button>
     </div>
 
     <div class="product-grid">
 
-      <a href="/product-custom.html" class="product-card" data-key="custom">
+      <a href="/product-business.html" class="product-card" data-key="biz">
         <div class="product-card-img">
-          <img src="/assets/images/custom-songdynasty-12.jpeg" alt="" loading="lazy">
+          <img src="/assets/images/tours/biz-alibaba.jpg" alt="" loading="lazy">
         </div>
         <div class="product-card-body">
-          <span class="product-card-tag" data-i18n="pc.custom.tag">Custom Travel</span>
-          <h3 data-i18n="pc.custom.title">Crafted around you.</h3>
-          <p class="desc" data-i18n="pc.custom.desc">Private, fully bespoke journeys designed around your dates, interests and pace.</p>
+          <span class="product-card-tag" data-i18n="pc.biz.tag">Business Tour</span>
+          <h3 data-i18n="pc.biz.title">Where China's future is built.</h3>
+          <p class="desc" data-i18n="pc.biz.desc">AI labs, smart factories, top universities and immersive tech — curated visits for business delegations.</p>
           <div class="highlights">
-            <span data-i18n="pc.custom.h1">Bespoke itinerary</span>
-            <span data-i18n="pc.custom.h2">Local hosts & experts</span>
-            <span data-i18n="pc.custom.h3">Flexible pace</span>
+            <span data-i18n="ph.biz.1">AI & robotics labs</span>
+            <span data-i18n="ph.biz.2">Smart factories</span>
+            <span data-i18n="ph.biz.3">Top universities</span>
           </div>
-          <span class="card-cta" data-i18n="pc.custom.cta">Plan my trip
+          <span class="card-cta" data-i18n="pc.biz.cta">Plan a study visit
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
           </span>
         </div>
       </a>
 
-      <a href="/product-traditional.html" class="product-card" data-key="traditional">
+      <a href="/product-scenery.html" class="product-card" data-key="scn">
         <div class="product-card-img">
-          <img src="/assets/images/about-rapefield.jpeg" alt="" loading="lazy">
+          <img src="/assets/images/tours/scn-lingyin.jpg" alt="" loading="lazy">
         </div>
         <div class="product-card-body">
-          <span class="product-card-tag" data-i18n="pc.traditional.tag">Classic Tours</span>
-          <h3 data-i18n="pc.traditional.title">The must-see Jiangnan.</h3>
-          <p class="desc" data-i18n="pc.traditional.desc">Curated classic routes covering the icons of Hangzhou and beyond.</p>
+          <span class="product-card-tag" data-i18n="pc.scn.tag">Classic Sights</span>
+          <h3 data-i18n="pc.scn.title">The icons of Hangzhou.</h3>
+          <p class="desc" data-i18n="pc.scn.desc">Temples, shows, tea fields, wetlands and the Qiantang tide — the must-see classics, done right.</p>
           <div class="highlights">
-            <span data-i18n="pc.traditional.h1">Iconic landmarks</span>
-            <span data-i18n="pc.traditional.h2">Small group</span>
-            <span data-i18n="pc.traditional.h3">1–7 day options</span>
+            <span data-i18n="ph.scn.1">Temples & shows</span>
+            <span data-i18n="ph.scn.2">Tea culture</span>
+            <span data-i18n="ph.scn.3">Lakes & tides</span>
           </div>
-          <span class="card-cta" data-i18n="pc.traditional.cta">Browse classics
+          <span class="card-cta" data-i18n="pc.scn.cta">Browse classics
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
           </span>
         </div>
       </a>
 
-      <a href="/product-family.html" class="product-card" data-key="family">
+      <a href="/product-culture.html" class="product-card" data-key="cul">
         <div class="product-card-img">
-          <img src="/assets/images/family-mengyou.jpeg" alt="" loading="lazy">
+          <img src="/assets/images/tours/cul-round-fan.jpg" alt="" loading="lazy">
         </div>
         <div class="product-card-body">
-          <span class="product-card-tag" data-i18n="pc.family.tag">Family Trip</span>
-          <h3 data-i18n="pc.family.title">Travel that bonds generations.</h3>
-          <p class="desc" data-i18n="pc.family.desc">Designed around parent–child togetherness — hands-on culture, gentle adventure.</p>
+          <span class="product-card-tag" data-i18n="pc.cul.tag">Cultural Experience</span>
+          <h3 data-i18n="pc.cul.title">Live the culture, don't just see it.</h3>
+          <p class="desc" data-i18n="pc.cul.desc">Calligraphy, opera, crafts and heritage workshops guided by local masters.</p>
           <div class="highlights">
-            <span data-i18n="pc.family.h1">Kid-friendly pacing</span>
-            <span data-i18n="pc.family.h2">Hands-on workshops</span>
-            <span data-i18n="pc.family.h3">Safe & vetted</span>
+            <span data-i18n="ph.cul.1">Master-led workshops</span>
+            <span data-i18n="ph.cul.2">Small groups</span>
+            <span data-i18n="ph.cul.3">EN & RU interpretation</span>
           </div>
-          <span class="card-cta" data-i18n="pc.family.cta">Plan with kids
+          <span class="card-cta" data-i18n="pc.cul.cta">Discover culture
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
           </span>
         </div>
       </a>
 
-      <a href="/product-culture.html" class="product-card" data-key="culture">
+      <a href="/product-food.html" class="product-card" data-key="food">
         <div class="product-card-img">
-          <img src="/assets/images/culture-roleplay-1.png" alt="" loading="lazy">
+          <img src="/assets/images/tours/food-song-banquet.jpg" alt="" loading="lazy">
         </div>
         <div class="product-card-body">
-          <span class="product-card-tag" data-i18n="pc.culture.tag">Cultural Experience</span>
-          <h3 data-i18n="pc.culture.title">Live the culture, don't just see it.</h3>
-          <p class="desc" data-i18n="pc.culture.desc">Roleplay scripts, palace banquets, hands-on DIY, and curator-led museum visits.</p>
+          <span class="product-card-tag" data-i18n="pc.food.tag">Food Experience</span>
+          <h3 data-i18n="pc.food.title">Dine your way through Jiangnan.</h3>
+          <p class="desc" data-i18n="pc.food.desc">Song-dynasty banquets, tea-garden dinners and a lake yacht feast.</p>
           <div class="highlights">
-            <span data-i18n="pc.culture.h1">Roleplay scripts</span>
-            <span data-i18n="pc.culture.h2">Banquets & cuisine</span>
-            <span data-i18n="pc.culture.h3">Museums & DIY</span>
+            <span data-i18n="ph.food.1">Six dinner styles</span>
+            <span data-i18n="ph.food.2">Song banquet</span>
+            <span data-i18n="ph.food.3">Lake yacht gala</span>
           </div>
-          <span class="card-cta" data-i18n="pc.culture.cta">Discover culture
+          <span class="card-cta" data-i18n="pc.food.cta">Taste Jiangnan
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
           </span>
         </div>
@@ -150,7 +150,6 @@
         <h4 data-i18n="footer.explore">Explore</h4>
         <ul>
           <li><a href="/products.html" data-i18n="nav.products">Tours</a></li>
-          <li><a href="/guides.html" data-i18n="nav.guides">Guides</a></li>
         </ul>
       </div>
       <div>
@@ -177,7 +176,8 @@
   </div>
 </footer>
 
-<script src="/assets/js/i18n.js"></script>
-<script src="/assets/js/main.js"></script>
+<script src="/assets/js/i18n.js?v=20260924c"></script>
+<script src="/assets/js/main.js?v=20260924c"></script>
+<script src="/assets/js/registration.js?v=20260924c"></script>
 </body>
 </html>
